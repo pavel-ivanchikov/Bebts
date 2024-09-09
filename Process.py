@@ -1,5 +1,5 @@
 import datetime
-from Message import Message
+from Transaction import Transaction
 
 
 class Process:
@@ -11,16 +11,17 @@ class Process:
         self._reminder = None
         self.related_processes = []
 
-    def add_message(self, message: Message, init: bool):
+    def add_transaction(self, transaction: Transaction, init: bool):
         if not init:
+            # Тут происходит сериализация
             name = r"C:/DebtCounter/first/" + str(int(self._me * 10 ** 6))
             with open(name, 'a', encoding='UTF-8') as file:
-                if message.official:
-                    file.write(str(message.date) + ' +\n')
+                if transaction.official:
+                    file.write(str(transaction.date) + ' +\n')
                 else:
-                    file.write(str(message.date) + '\n')
-                file.write(message.text + '\n')
-        self.__data.append(message)
+                    file.write(str(transaction.date) + '\n')
+                file.write(transaction.text + '\n')
+        self.__data.append(transaction)
 
     def act(self, text, date=None, official=False):
         if date:
@@ -35,15 +36,15 @@ class Process:
             else:
                 raise ValueError('Wrong Tag')
         else:
-            self.add_message(Message(date, text, official), init)
+            self.add_transaction(Transaction(date, text, official), init)
 
     def info(self, text, date, init):
         pass
 
     def split(self, text, date, init):
-        self.add_message(Message(date, f'SPLIT {date} from {self._me}', True), init)
+        self.add_transaction(Transaction(date, f'SPLIT {date} from {self._me}', True), init)
         process = Process((date, self._me))
-        process.add_message(Message(date, f'INFO New: {date} from {self._me}', True), init)
+        process.add_transaction(Transaction(date, f'INFO New: {date} from {self._me}', True), init)
         self.related_processes.append(process)
         process.related_processes.append(self)
         return process
@@ -51,8 +52,8 @@ class Process:
     def cross(self, text, date, init):
         other_id = float(text.split()[1])
         process = self.get_process(other_id)
-        self.add_message(Message(date, f'CROSS {other_id} and {self._me}', True), init)
-        process.add_message(Message(date, f'INFO CROSS {self._me} and {other_id}', True), init)
+        self.add_transaction(Transaction(date, f'CROSS {other_id} and {self._me}', True), init)
+        process.add_transaction(Transaction(date, f'INFO CROSS {self._me} and {other_id}', True), init)
         self.related_processes.append(process)
         process.related_processes.append(self)
 
@@ -81,5 +82,5 @@ class Process:
             date = datetime.datetime.now(datetime.timezone.utc).timestamp()
             init = False
         process = Process((date, 0))
-        process.add_message(Message(date, f'INFO New: {date} from {0}', True), init)
+        process.add_transaction(Transaction(date, f'INFO New: {date} from {0}', True), init)
         return process

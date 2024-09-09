@@ -1,7 +1,7 @@
 import datetime
 
 
-class Message:
+class Transaction:
     def __init__(self, date, text, official=False):
         self.date = date
         self.text = text

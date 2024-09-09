@@ -1,4 +1,4 @@
-from Message import Message
+from Transaction import Transaction
 from Process import Process
 
 
@@ -10,8 +10,9 @@ class ProcessesManager:
         self.temp_message_dict = {}
         first_process = Process.create_first_process(int(first_process_name) / 10 ** 6)
         self.main_dict[first_process_name] = first_process
-        self.read(first_process_name)
-        self.initialization()
+        self.read(first_process_name) # Тут происходит считывание транзакций всего дерева процессов.
+        self.initialization()  # Тут происходит десериализация
+
 
     def read(self, name):
         self.temp_message_dict[name] = []
@@ -23,13 +24,14 @@ class ProcessesManager:
                 official = False
                 if len(lines[i].split(' ')) > 1:
                     official = True
-                self.temp_message_dict[name].append(Message(date, text, official))
+                self.temp_message_dict[name].append(Transaction(date, text, official))
                 tag = text.split(' ')[0]
                 if official and tag == 'SPLIT':
                     name1 = str(round(float(text.split(' ')[1]) * 10 ** 6))
                     self.read(name1)
 
     def initialization(self):
+        # Тут происходит десериализация
         temp = []
         for name in self.temp_message_dict.keys():
             if len(self.temp_message_dict[name]) > 0:
@@ -37,13 +39,13 @@ class ProcessesManager:
         if len(temp) == 0:
             return 0
         next_process_name = min(temp)[1]
-        message = self.temp_message_dict[next_process_name][0]
+        transaction = self.temp_message_dict[next_process_name][0]
         self.temp_message_dict[next_process_name].pop(0)
-        tag = message.text.split(' ')[0]
-        if message.official and tag == 'SPLIT':
-            process = self.main_dict[next_process_name].act(message.text, message.date, message.official)
-            name1 = str(round(float(message.text.split(' ')[1]) * 10 ** 6))
+        tag = transaction.text.split(' ')[0]
+        if transaction.official and tag == 'SPLIT':
+            process = self.main_dict[next_process_name].act(transaction.text, transaction.date, transaction.official)
+            name1 = str(round(float(transaction.text.split(' ')[1]) * 10 ** 6))
             self.main_dict[name1] = process
         else:
-            self.main_dict[next_process_name].act(message.text, message.date, message.official)
+            self.main_dict[next_process_name].act(transaction.text, transaction.date, transaction.official)
         self.initialization()
