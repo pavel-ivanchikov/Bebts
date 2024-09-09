@@ -10,13 +10,12 @@ class ProcessesManager:
         self.temp_message_dict = {}
         first_process = Process.create_first_process(int(first_process_name) / 10 ** 6)
         self.main_dict[first_process_name] = first_process
-        self.read(first_process_name) # Тут происходит считывание транзакций всего дерева процессов.
-        self.initialization()  # Тут происходит десериализация
+        self._read(first_process_name) # Тут происходит считывание транзакций всего дерева процессов.
+        self._acting()  # Тут происходит десериализация
 
-
-    def read(self, name):
+    def _read(self, name):
         self.temp_message_dict[name] = []
-        with open(self.path + name, 'r', encoding='UTF-8') as file:
+        with open(self.path + name + '.txt', 'r', encoding='UTF-8') as file:
             lines = file.readlines()
             for i in range(0, len(lines), 2):
                 date = float(lines[i].split(' ')[0])
@@ -28,9 +27,9 @@ class ProcessesManager:
                 tag = text.split(' ')[0]
                 if official and tag == 'SPLIT':
                     name1 = str(round(float(text.split(' ')[1]) * 10 ** 6))
-                    self.read(name1)
+                    self._read(name1)
 
-    def initialization(self):
+    def _acting(self):
         # Тут происходит десериализация
         temp = []
         for name in self.temp_message_dict.keys():
@@ -48,4 +47,4 @@ class ProcessesManager:
             self.main_dict[name1] = process
         else:
             self.main_dict[next_process_name].act(transaction.text, transaction.date, transaction.official)
-        self.initialization()
+        self._acting()

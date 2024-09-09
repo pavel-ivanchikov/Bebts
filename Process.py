@@ -14,7 +14,7 @@ class Process:
     def add_transaction(self, transaction: Transaction, init: bool):
         if not init:
             # Тут происходит сериализация
-            name = r"C:/DebtCounter/first/" + str(int(self._me * 10 ** 6))
+            name = r"C:/DebtCounter/first/" + str(int(self._me * 10 ** 6)) + '.txt'
             with open(name, 'a', encoding='UTF-8') as file:
                 if transaction.official:
                     file.write(str(transaction.date) + ' +\n')
