@@ -38,10 +38,10 @@ class Process:
         else:
             self.add_transaction(Transaction(date, text, official), init)
 
-    def info(self, text, date, init):
+    def info(self, text: str, date: float, init: bool):
         pass
 
-    def split(self, text, date, init):
+    def split(self, text: str, date: float, init: bool):
         self.add_transaction(Transaction(date, f'SPLIT {date} from {self._me}', True), init)
         process = Process((date, self._me))
         process.add_transaction(Transaction(date, f'INFO New: {date} from {self._me}', True), init)
@@ -49,7 +49,7 @@ class Process:
         process.related_processes.append(self)
         return process
 
-    def cross(self, text, date, init):
+    def cross(self, text: str, date: float, init: bool):
         other_id = float(text.split()[1])
         process = self.get_process(other_id)
         self.add_transaction(Transaction(date, f'CROSS {other_id} and {self._me}', True), init)
@@ -57,7 +57,7 @@ class Process:
         self.related_processes.append(process)
         process.related_processes.append(self)
 
-    def get_process(self, identifier):
+    def get_process(self, identifier: tuple[float, float]):
         checked_processes = []
         for process in self.related_processes:
             if process not in checked_processes:

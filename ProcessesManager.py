@@ -3,7 +3,7 @@ from Process import Process
 
 
 class ProcessesManager:
-    def __init__(self, path, first_process_name):
+    def __init__(self, path: str, first_process_name: str):
         self.path = path
         self.first_process_name = first_process_name
         self.main_dict = {}

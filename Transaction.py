@@ -2,7 +2,7 @@ import datetime
 
 
 class Transaction:
-    def __init__(self, date, text, official=False):
+    def __init__(self, date: float, text: str, official=False):
         self.date = date
         self.text = text
         self.official = official
