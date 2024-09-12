@@ -71,9 +71,11 @@ class Process:
     def get_identifier(self):
         return self._me, self._parent
 
+    def get_name(self):
+        return str(int(self._me * 10 ** 6))
+
     def __repr__(self):
-        return f'\nProcess {self.get_identifier()}:' + '\n' + \
-                '\n-\n'.join(map(lambda x: str(x), reversed(self.__data)))
+        return f'\n' + '\n\n'.join(map(lambda x: str(x), reversed(self.__data)))
 
     @classmethod
     def create_first_process(cls, date=None):
