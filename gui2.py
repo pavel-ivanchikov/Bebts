@@ -12,9 +12,6 @@ def new_screen(name):
         for process in pm.main_dict[name].related_processes:
             main_list.append(Button(root, text=process.get_name(), command=new_screen(process.get_name())))
         main_list.append(Text(root, height=5))
-        # text = Text(root, height=5)
-        # info = text.get(1.0, "end-1c")
-        # print(info)
         main_list.append(Button(root, text='Add Message', command=transact(name, False)))
         main_list.append(Button(root, text='Split', command=transact(name, True)))
         main_list.append(Button(root, text='Cross', command=transact(name, True)))
