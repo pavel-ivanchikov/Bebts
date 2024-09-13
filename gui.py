@@ -18,7 +18,7 @@ def new_button_act():
 
 
 path = r"C:/DebtCounter/first/"
-first_process_name = '1726038875105655'
+first_process_name = '1726230292029195'
 
 pm = ProcessesManager(path, first_process_name)
 

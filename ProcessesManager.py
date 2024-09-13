@@ -48,3 +48,6 @@ class ProcessesManager:
         else:
             self.main_dict[next_process_name].act(transaction.text, transaction.date, transaction.official)
         self._acting()
+
+    def add_new_process(self, process):
+        self.main_dict[process.get_name()] = process
