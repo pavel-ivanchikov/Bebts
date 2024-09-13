@@ -28,15 +28,16 @@ def new_screen(name):
 def transact(name, official):
     def fun():
         input_text = main_list[-6].get(1.0, "end-1c")
-        rez = pm.main_dict[name].act(input_text, official=official)
-        if rez:
-            pm.add_new_process(rez)
-        new_screen(name)()
+        if input_text:
+            rez = pm.main_dict[name].act(input_text, official=official)
+            if rez:
+                pm.add_new_process(rez)
+            new_screen(name)()
     return fun
 
 
 path = r"C:/DebtCounter/first/"
-first_process_name = '1726230292029195'
+first_process_name = '1726239543341073'
 pm = ProcessesManager(path, first_process_name)
 
 root = Tk()

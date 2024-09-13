@@ -4,7 +4,8 @@ import datetime
 class Transaction:
     def __init__(self, date: float, text: str, official=False):
         self.date = date
-        self.text = text
+        good_text = text.split('\n')
+        self.text = '\t'.join(good_text)
         self.official = official
 
     def __repr__(self):
