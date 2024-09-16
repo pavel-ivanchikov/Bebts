@@ -74,6 +74,16 @@ class Process:
     def get_name(self):
         return str(int(self._me * 10 ** 6))
 
+    def get_last_date(self):
+        return self.__data[-1].date
+
+    def get_first_date(self):
+        return self.__data[0].date
+
+
+    def get_data(self):
+        return self.__data[:]
+
     def __repr__(self):
         return f'\n' + '\n\n'.join(map(lambda x: str(x), reversed(self.__data)))
 
