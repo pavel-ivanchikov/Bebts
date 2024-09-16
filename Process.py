@@ -41,7 +41,7 @@ class Process:
     def info(self, text: str, date: float, init: bool):
         pass
 
-    def split(self, text: str, date: float, init: bool):
+    def split(self, _, date: float, init: bool):
         self.add_transaction(Transaction(date, f'SPLIT {date} from {self._me}', True), init)
         process = Process((date, self._me))
         process.add_transaction(Transaction(date, f'INFO New: {date} from {self._me}', True), init)
@@ -57,7 +57,7 @@ class Process:
         self.related_processes.append(process)
         process.related_processes.append(self)
 
-    def get_process(self, identifier: tuple[float, float]):
+    def get_process(self, identifier: float):
         checked_processes = []
         for process in self.related_processes:
             if process not in checked_processes:

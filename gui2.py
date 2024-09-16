@@ -4,7 +4,6 @@ from tkinter import *
 
 def row(name, main_start, main_finish):
     n = 50
-    # time_row = '-' * 82 + '>'
     ans = ['-' for _ in range(n + 2)]
     one = (main_finish - main_start) / n
     start = pm.main_dict[name].get_identifier()[0]
@@ -16,8 +15,8 @@ def row(name, main_start, main_finish):
             time_crossing = transaction.date
             position = round((time_crossing - main_start) / one)
             ans[position] = 'x'
-    # return time_row + "\n" + ''.join(ans) + '>'
     return ''.join(ans) + '>'
+
 
 def new_screen(name):
     def fun():
@@ -25,8 +24,10 @@ def new_screen(name):
             for w in main_list:
                 w.destroy()
             main_list.clear()
-        main_start = min(pm.main_dict[name].get_first_date(), min(pm.main_dict[name].related_processes, key=lambda x: x.get_first_date()).get_first_date())
-        main_finish = max(pm.main_dict[name].get_last_date(), max(pm.main_dict[name].related_processes, key=lambda x: x.get_last_date()).get_last_date())
+        main_start = min(pm.main_dict[name].get_first_date(),
+                         min(pm.main_dict[name].related_processes, key=lambda x: x.get_first_date()).get_first_date())
+        main_finish = max(pm.main_dict[name].get_last_date(),
+                          max(pm.main_dict[name].related_processes, key=lambda x: x.get_last_date()).get_last_date())
         rows = []
         main_list.append(Button(root, text='Close', command=quit))
         main_list.append(Button(root, text=name))
@@ -57,7 +58,7 @@ def transact(name, official):
 
 
 path = r"C:/DebtCounter/first/"
-first_process_name = '1726490144782694'
+first_process_name = '1726490982231689'
 pm = ProcessesManager(path, first_process_name)
 
 root = Tk()
