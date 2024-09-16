@@ -80,9 +80,12 @@ class Process:
     def get_first_date(self):
         return self.__data[0].date
 
-
     def get_data(self):
         return self.__data[:]
+
+    def get_not_official_transaction(self):
+        not_official = [i for i in self.__data if not i.official]
+        return f'\n' + '\n\n'.join(map(lambda x: str(x), reversed(not_official)))
 
     def __repr__(self):
         return f'\n' + '\n\n'.join(map(lambda x: str(x), reversed(self.__data)))
