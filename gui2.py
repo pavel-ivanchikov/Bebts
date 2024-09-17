@@ -1,5 +1,6 @@
 from ProcessesManager import ProcessesManager
 from tkinter import *
+import os
 
 
 def row(name, main_start, main_finish):
@@ -25,9 +26,11 @@ def new_screen(name):
                 w.destroy()
             main_list.clear()
         main_start = min(pm.main_dict[name].get_first_date(),
-                         min(pm.main_dict[name].related_processes, key=lambda x: x.get_first_date()).get_first_date())
+                         min(pm.main_dict[name].related_processes,
+                             key=lambda x: x.get_first_date()).get_first_date())
         main_finish = max(pm.main_dict[name].get_last_date(),
-                          max(pm.main_dict[name].related_processes, key=lambda x: x.get_last_date()).get_last_date())
+                          max(pm.main_dict[name].related_processes,
+                              key=lambda x: x.get_last_date()).get_last_date())
         rows = []
         main_list.append(Button(root, text='Close', command=quit))
         main_list.append(Button(root, text=name))
@@ -36,7 +39,7 @@ def new_screen(name):
             main_list.append(Button(root, text=process.get_name(), command=new_screen(process.get_name())))
             rows.append(row(process.get_name(), main_start, main_finish))
         main_list.append(Label(root, text='\n'.join(rows), justify=LEFT))
-        main_list.append(Text(root, height=5))
+        main_list.append(Text(root, height=2))
         main_list.append(Button(root, text='Add Message', command=transact(name, False)))
         main_list.append(Button(root, text='Split', command=transact(name, True)))
         main_list.append(Button(root, text='Cross', command=transact(name, True)))
@@ -58,13 +61,12 @@ def transact(name, official):
 
 
 path = r"C:/DebtCounter/first/"
-first_process_name = '1726490982231689'
-pm = ProcessesManager(path, first_process_name)
+pm = ProcessesManager(path)
+first_process_name = min(os.listdir(path)).split('.')[0]
 
 root = Tk()
 root.title("Debt Counter")
 root.geometry('420x600')
-current_main_process_name = first_process_name
 root.resizable(False, False)
 main_list = []
 new_screen(first_process_name)()

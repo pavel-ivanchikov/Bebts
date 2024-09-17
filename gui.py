@@ -1,6 +1,6 @@
 from ProcessesManager import ProcessesManager
 from tkinter import *
-
+import os
 
 def change():
     if button['text'] == 'Putin':
@@ -18,9 +18,7 @@ def new_button_act():
 
 
 path = r"C:/DebtCounter/first/"
-first_process_name = '1726239543341073'
-
-pm = ProcessesManager(path, first_process_name)
+pm = ProcessesManager(path)
 
 root = Tk()
 a = Label(root, text="Debt Counter")

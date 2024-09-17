@@ -16,10 +16,7 @@ class Process:
             # Тут происходит сериализация
             name = r"C:/DebtCounter/first/" + str(int(self._me * 10 ** 6)) + '.txt'
             with open(name, 'a', encoding='UTF-8') as file:
-                if transaction.official:
-                    file.write(str(transaction.date) + ' +\n')
-                else:
-                    file.write(str(transaction.date) + '\n')
+                file.write(str(transaction.date) + (' +' if transaction.official else '') + '\n')
                 file.write(transaction.text + '\n')
         self.__data.append(transaction)
 

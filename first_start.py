@@ -47,6 +47,26 @@ first_person.act('Третье сообщение во втором процес
 time.sleep(1)
 second_person.act('Третье сообщение в третьем процессе')
 
+time.sleep(1)
+my_life.act('Четвёртое сообщение в первом процессе')
+time.sleep(1)
+first_person.act('Четвёртое сообщение во втором процессе')
+time.sleep(1)
+second_person.act('Четвёртое сообщение в третьем процессе')
+time.sleep(1)
+debt1.act('Четвёртое сообщение в четвёртом процессе')
+time.sleep(1)
+debt2.act('Четвёртое сообщение в пятом процессе')
+
+debt11 = first_person.act('SPLIT', official=True)
+time.sleep(1)
+debt11.act('Первое сообщение в 6 процессе')
+time.sleep(1)
+
+debt21 = second_person.act('SPLIT', official=True)
+time.sleep(1)
+debt21.act('Первое сообщение в 7 процессе')
+time.sleep(1)
 
 print(my_life)
 print(first_person)
