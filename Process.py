@@ -14,7 +14,7 @@ class Process:
     def add_transaction(self, transaction: Transaction, init: bool):
         if not init:
             # Тут происходит сериализация
-            name = r"C:/DebtCounter/first/" + str(int(self._me * 10 ** 6)) + '.txt'
+            name = r"C:/DebtCounter/second/" + str(int(self._me * 10 ** 6)) + '.txt'
             with open(name, 'a', encoding='UTF-8') as file:
                 file.write(str(transaction.date) + (' +' if transaction.official else '') + '\n')
                 file.write(transaction.text + '\n')
@@ -68,7 +68,7 @@ class Process:
     def get_identifier(self):
         return self._me, self._parent
 
-    def get_name(self):
+    def get_process_name(self):
         return str(int(self._me * 10 ** 6))
 
     def get_last_date(self):

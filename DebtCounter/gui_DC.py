@@ -1,4 +1,5 @@
-from ProcessesManager import ProcessesManager
+from ProcessesManagerDC import ProcessesManagerDC
+from MyLife import MyLife
 from tkinter import *
 import os
 
@@ -33,10 +34,10 @@ def new_screen(name):
                               key=lambda x: x.get_last_date()).get_last_date())
         rows = []
         main_list.append(Button(root, text='Close', command=quit))
-        main_list.append(Button(root, text=name))
+        main_list.append(Button(root, text=pm.main_dict[name].get_button_name()))
         rows.append(row(name, main_start, main_finish))
         for process in pm.main_dict[name].related_processes:
-            main_list.append(Button(root, text=process.get_process_name(), command=new_screen(process.get_process_name())))
+            main_list.append(Button(root, text=process.get_button_name(), command=new_screen(process.get_process_name())))
             rows.append(row(process.get_process_name(), main_start, main_finish))
         main_list.append(Label(root, text='\n'.join(rows), justify=LEFT))
         main_list.append(Text(root, height=2))
@@ -60,8 +61,8 @@ def transact(name, official):
     return fun
 
 
-path = r"C:/DebtCounter/first/"
-pm = ProcessesManager(path)
+path = r"C:/DebtCounter/second/"
+pm = ProcessesManagerDC(path)
 first_process_name = min(os.listdir(path)).split('.')[0]
 
 root = Tk()
