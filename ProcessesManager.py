@@ -11,7 +11,7 @@ class ProcessesManager:
         self.temp_message_dict = {}
         first_process = Process.create_first_process(int(self.first_process_name) / 10 ** 6)
         self.main_dict[self.first_process_name] = first_process
-        self._read(self.first_process_name) # Тут происходит считывание транзакций всего дерева процессов.
+        self._read(self.first_process_name)  # Тут происходит считывание транзакций всего дерева процессов.
         self._acting()  # Тут происходит десериализация
 
     def _read(self, name):

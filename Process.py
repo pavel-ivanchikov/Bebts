@@ -3,6 +3,7 @@ from Transaction import Transaction
 
 
 class Process:
+
     def __init__(self, identifier: tuple[float, float]):
         self.__data = []
         self._me = identifier[0]

@@ -42,9 +42,10 @@ def new_screen(name):
         main_list.append(Label(root, text='\n'.join(rows), justify=LEFT))
         main_list.append(Text(root, height=2))
         main_list.append(Button(root, text='Add Message', command=transact(name, False)))
-        main_list.append(Button(root, text='Split', command=transact(name, True)))
-        main_list.append(Button(root, text='Cross', command=transact(name, True)))
-        main_list.append(Label(root, text=pm.main_dict[name].get_not_official_transaction(), justify=LEFT))
+        main_list.append(Button(root, text='Official', command=transact(name, True)))
+        # main_list.append(Label(root, text=pm.main_dict[name].get_not_official_transaction(), justify=LEFT))
+        main_list.append(Label(root, text=pm.main_dict[name], justify=LEFT))
+
         for w in main_list:
             w.pack()
     return fun
@@ -52,7 +53,7 @@ def new_screen(name):
 
 def transact(name, official):
     def fun():
-        input_text = main_list[-5].get(1.0, "end-1c")
+        input_text = main_list[-4].get(1.0, "end-1c")
         if input_text:
             rez = pm.main_dict[name].act(input_text, official=official)
             if rez:
