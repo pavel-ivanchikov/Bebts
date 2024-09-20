@@ -1,8 +1,5 @@
 import time
-from Process import Process
 from MyLife import MyLife
-from Person import Person
-from Debt import Debt
 
 my_life = MyLife.create_first_process()
 time.sleep(1)

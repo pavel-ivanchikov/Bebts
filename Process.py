@@ -3,6 +3,8 @@ from Transaction import Transaction
 
 
 class Process:
+    _all_processes = {}
+    _path = r"C:/DebtCounter/second/"
 
     def __init__(self, identifier: tuple[float, float]):
         self.__data = []
@@ -11,11 +13,12 @@ class Process:
         self._able = {'INFO': self.info, 'SPLIT': self.split, 'CROSS': self.cross}
         self._reminder = None
         self.related_processes = []
+        Process._all_processes[self.get_process_name()] = self
 
     def add_transaction(self, transaction: Transaction, init: bool):
         if not init:
             # Тут происходит сериализация
-            name = r"C:/DebtCounter/second/" + str(int(self._me * 10 ** 6)) + '.txt'
+            name = Process._path + str(int(self._me * 10 ** 6)) + '.txt'
             with open(name, 'a', encoding='UTF-8') as file:
                 file.write(str(transaction.date) + (' +' if transaction.official else '') + '\n')
                 file.write(transaction.text + '\n')
@@ -49,22 +52,18 @@ class Process:
 
     def cross(self, text: str, date: float, init: bool):
         other_id = float(text.split()[1])
-        process = self.get_process(other_id)
+        process = Process.get_process(other_id)
         self.add_transaction(Transaction(date, f'CROSS {other_id} and {self._me}', True), init)
         process.add_transaction(Transaction(date, f'INFO CROSS {self._me} and {other_id}', True), init)
         self.related_processes.append(process)
         process.related_processes.append(self)
 
-    def get_process(self, identifier: float):
-        checked_processes = []
-        for process in self.related_processes:
-            if process not in checked_processes:
-                if process.get_identifier()[0] == identifier:
-                    return process
-                else:
-                    checked_processes.append(process)
-                    return process.get_process(identifier)
-        raise ValueError('No process with such ID')
+    @staticmethod
+    def get_process(identifier: float):
+        if str(int(identifier * 10 ** 6)) in Process._all_processes:
+            return Process._all_processes[str(int(identifier * 10 ** 6))]
+        else:
+            raise ValueError('No process with such ID')
 
     def get_identifier(self):
         return self._me, self._parent
@@ -85,8 +84,11 @@ class Process:
         not_official = [i for i in self.__data if not i.official]
         return f'\n' + '\n\n'.join(map(lambda x: str(x), reversed(not_official)))
 
-    def __repr__(self):
+    def get_all_transaction(self):
         return f'\n' + '\n\n'.join(map(lambda x: str(x), reversed(self.__data)))
+
+    def __repr__(self):
+        return self.__class__.__name__ + ' ' + str(self.get_process_name())
 
     @classmethod
     def create_first_process(cls, date=None):

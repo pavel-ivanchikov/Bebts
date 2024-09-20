@@ -1,5 +1,4 @@
 from ProcessesManagerDC import ProcessesManagerDC
-from MyLife import MyLife
 from tkinter import *
 import os
 
@@ -33,7 +32,6 @@ def new_screen(name):
                           max(pm.main_dict[name].related_processes,
                               key=lambda x: x.get_last_date()).get_last_date())
         rows = []
-        main_list.append(Button(root, text='Close', command=quit))
         main_list.append(Button(root, text=pm.main_dict[name].get_button_name()))
         rows.append(row(name, main_start, main_finish))
         for process in pm.main_dict[name].related_processes:
@@ -43,8 +41,8 @@ def new_screen(name):
         main_list.append(Text(root, height=2))
         main_list.append(Button(root, text='Add Message', command=transact(name, False)))
         main_list.append(Button(root, text='Official', command=transact(name, True)))
-        # main_list.append(Label(root, text=pm.main_dict[name].get_not_official_transaction(), justify=LEFT))
-        main_list.append(Label(root, text=pm.main_dict[name], justify=LEFT))
+        main_list.append(Label(root, text=pm.main_dict[name].get_all_transaction(), justify=LEFT))
+        main_list.append(Button(root, text='Close', command=quit))
 
         for w in main_list:
             w.pack()
@@ -53,7 +51,7 @@ def new_screen(name):
 
 def transact(name, official):
     def fun():
-        input_text = main_list[-4].get(1.0, "end-1c")
+        input_text = main_list[-5].get(1.0, "end-1c")
         if input_text:
             rez = pm.main_dict[name].act(input_text, official=official)
             if rez:
@@ -68,7 +66,7 @@ first_process_name = min(os.listdir(path)).split('.')[0]
 
 root = Tk()
 root.title("Debt Counter")
-root.geometry('420x600')
+root.geometry('420x680')
 root.resizable(False, False)
 main_list = []
 new_screen(first_process_name)()

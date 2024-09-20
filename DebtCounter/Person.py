@@ -1,7 +1,6 @@
+from Transaction import Transaction
 from Process import Process
 from Debt import Debt
-import datetime
-from Transaction import Transaction
 
 
 class Person(Process):

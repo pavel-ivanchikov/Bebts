@@ -1,7 +1,6 @@
-from Transaction import Transaction
-from Process import Process
-from MyLife import MyLife
 import os
+from Transaction import Transaction
+from MyLife import MyLife
 
 
 class ProcessesManagerDC:
@@ -27,7 +26,7 @@ class ProcessesManagerDC:
                     official = True
                 self.temp_message_dict[name].append(Transaction(date, text, official))
                 tag = text.split(' ')[0]
-                if official and (tag == 'SPLIT' or tag == 'NEW_PERSON' or tag == 'NEW_DEBT'):
+                if official and tag in ('SPLIT', 'NEW_PERSON', 'NEW_DEBT'):
                     name1 = str(round(float(text.split(' ')[1]) * 10 ** 6))
                     self._read(name1)
 
@@ -43,7 +42,7 @@ class ProcessesManagerDC:
         transaction = self.temp_message_dict[next_process_name][0]
         self.temp_message_dict[next_process_name].pop(0)
         tag = transaction.text.split(' ')[0]
-        if transaction.official and (tag == 'SPLIT' or tag == 'NEW_PERSON' or tag == 'NEW_DEBT'):
+        if transaction.official and tag in ('SPLIT', 'NEW_PERSON', 'NEW_DEBT'):
             process = self.main_dict[next_process_name].act(transaction.text, transaction.date, transaction.official)
             name1 = str(round(float(transaction.text.split(' ')[1]) * 10 ** 6))
             self.main_dict[name1] = process
