@@ -55,8 +55,9 @@ class Process:
         process = Process.get_process(other_id)
         self.add_transaction(Transaction(date, f'CROSS {other_id} and {self._me}', True), init)
         process.add_transaction(Transaction(date, f'INFO CROSS {self._me} and {other_id}', True), init)
-        self.related_processes.append(process)
-        process.related_processes.append(self)
+        if process not in self.related_processes:
+            self.related_processes.append(process)
+            process.related_processes.append(self)
 
     @staticmethod
     def get_process(identifier: float):

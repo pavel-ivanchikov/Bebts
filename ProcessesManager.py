@@ -1,6 +1,6 @@
+import os
 from Transaction import Transaction
 from Process import Process
-import os
 
 
 class ProcessesManager:
@@ -9,6 +9,7 @@ class ProcessesManager:
         self.first_process_name = min(os.listdir(path)).split('.')[0]
         self.main_dict = {}
         self.temp_message_dict = {}
+        self.new_process_tags = ('SPLIT', )
         first_process = Process.create_first_process(int(self.first_process_name) / 10 ** 6)
         self.main_dict[self.first_process_name] = first_process
         self._read(self.first_process_name)  # Тут происходит считывание транзакций всего дерева процессов.
@@ -26,7 +27,7 @@ class ProcessesManager:
                     official = True
                 self.temp_message_dict[name].append(Transaction(date, text, official))
                 tag = text.split(' ')[0]
-                if official and tag == 'SPLIT':
+                if official and tag in self.new_process_tags:
                     name1 = str(round(float(text.split(' ')[1]) * 10 ** 6))
                     self._read(name1)
 
@@ -42,7 +43,7 @@ class ProcessesManager:
         transaction = self.temp_message_dict[next_process_name][0]
         self.temp_message_dict[next_process_name].pop(0)
         tag = transaction.text.split(' ')[0]
-        if transaction.official and tag == 'SPLIT':
+        if transaction.official and tag in self.new_process_tags:
             process = self.main_dict[next_process_name].act(transaction.text, transaction.date, transaction.official)
             name1 = str(round(float(transaction.text.split(' ')[1]) * 10 ** 6))
             self.main_dict[name1] = process
