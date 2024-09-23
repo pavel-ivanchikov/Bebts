@@ -30,6 +30,8 @@ class Debt(Process):
             amount = int(amount)
         except Exception:
             raise ValueError('Value should be positive integer number')
+        if amount < 0:
+            raise ValueError('Value should be positive integer number')
         self.add_transaction(Transaction(date, f'GIVE {amount} from debt {self.debt_amount}', True), init)
         self.debt_amount -= amount
 
@@ -38,6 +40,8 @@ class Debt(Process):
         try:
             amount = int(amount)
         except Exception:
+            raise ValueError('Value should be positive integer number')
+        if amount < 0:
             raise ValueError('Value should be positive integer number')
         self.add_transaction(Transaction(date, f'TAKE {amount} from debt {self.debt_amount}', True), init)
         self.debt_amount += amount
