@@ -16,7 +16,11 @@ def row(name, main_start, main_finish):
             time_crossing = transaction.date
             position = round((time_crossing - main_start) / one)
             ans[position] = 'x'
-    return pm.main_dict[name].get_button_name() + '\n' + ''.join(ans) + '>'
+    if hasattr(pm.main_dict[name], "get_button_name"):
+        text = pm.main_dict[name].get_button_name()
+    else:
+        text = pm.main_dict[name].get_process_name()
+    return text + '\n' + ''.join(ans) + '>'
 
 
 def new_screen(name):
@@ -33,7 +37,11 @@ def new_screen(name):
                               key=lambda x: x.get_last_date()).get_last_date())
         rows = [row(name, main_start, main_finish)]
         for process in pm.main_dict[name].related_processes:
-            main_list.append(Button(root, text=process.get_button_name(), command=new_screen(process.get_process_name())))
+            if hasattr(process, "get_button_name"):
+                text = process.get_button_name()
+            else:
+                text = process.get_process_name()
+            main_list.append(Button(root, text=text, command=new_screen(process.get_process_name())))
             rows.append(row(process.get_process_name(), main_start, main_finish))
         main_list.insert(0, Label(root, text='\n'.join(rows), justify=LEFT))
         main_list.append(Label(root, text=pm.previous_action_result))

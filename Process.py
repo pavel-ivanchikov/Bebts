@@ -91,9 +91,6 @@ class Process:
     def get_all_transaction(self):
         return f'\n' + '\n\n'.join(map(lambda x: str(x), reversed(self.__data)))
 
-    def get_button_name(self):
-        return self.get_process_name()
-
     def __repr__(self):
         return self.__class__.__name__ + ' ' + str(self.get_process_name())
 
