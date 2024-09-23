@@ -16,8 +16,8 @@ class Person(Process):
         self._able.update({'NEW_DEBT': self.new_debt, 'CHANGE_NAME': self.change_name})
 
     def new_debt(self, _, date: float, init: bool):
-        self.add_transaction(Transaction(date, f'NEW_DEBT {date} from {self._me}', True), init)
         process = Debt((date, self._me))
+        self.add_transaction(Transaction(date, f'NEW_DEBT {date} from {self._me}', True), init)
         process.add_transaction(Transaction(date, f'INFO New debt: {date} from {self._me}', True), init)
         self.related_processes.append(process)
         process.related_processes.append(self)

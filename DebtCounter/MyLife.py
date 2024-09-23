@@ -14,8 +14,9 @@ class MyLife(Process):
 
     def __init__(self, identifier: tuple[float, float]):
         super().__init__(identifier)
-        self._able.update({'NEW_PERSON': self.new_person, 'CHANGE_NAME': self.change_name})
-        self.name = 'My_Life'
+        self._able.update({'NEW_PERSON': self.new_person, 'CHANGE_NAME': self.change_name, 'CHANGE_BIRTHDAY': self.change_birthday})
+        self.name = 'Main Process'
+        self.birthday = None
 
     def new_person(self, _, date: float, init: bool):
         self.add_transaction(Transaction(date, f'NEW_PERSON {date} from {self._me}', True), init)
@@ -29,6 +30,11 @@ class MyLife(Process):
         new_name = text.split(' ')[1]
         self.add_transaction(Transaction(date, f'CHANGE_NAME {new_name} from {self.name}', True), init)
         self.name = new_name
+
+    def change_birthday(self, text, date: float, init: bool):
+        new_birthday = text.split(' ')[1]
+        self.add_transaction(Transaction(date, f'CHANGE_BIRTHDAY {new_birthday} from {self.birthday}', True), init)
+        self.birthday = new_birthday
 
     def get_button_name(self):
         return self.name

@@ -16,7 +16,7 @@ def row(name, main_start, main_finish):
             time_crossing = transaction.date
             position = round((time_crossing - main_start) / one)
             ans[position] = 'x'
-    return ''.join(ans) + '>'
+    return pm.main_dict[name].get_button_name() + '\n' + ''.join(ans) + '>'
 
 
 def new_screen(name):
@@ -31,13 +31,12 @@ def new_screen(name):
         main_finish = max(pm.main_dict[name].get_last_date(),
                           max(pm.main_dict[name].related_processes,
                               key=lambda x: x.get_last_date()).get_last_date())
-        rows = []
-        main_list.append(Button(root, text=pm.main_dict[name].get_button_name()))
-        rows.append(row(name, main_start, main_finish))
+        rows = [row(name, main_start, main_finish)]
         for process in pm.main_dict[name].related_processes:
             main_list.append(Button(root, text=process.get_button_name(), command=new_screen(process.get_process_name())))
             rows.append(row(process.get_process_name(), main_start, main_finish))
-        main_list.append(Label(root, text='\n'.join(rows), justify=LEFT))
+        main_list.insert(0, Label(root, text='\n'.join(rows), justify=LEFT))
+        main_list.append(Label(root, text=pm.previous_action_result))
         main_list.append(Text(root, height=2))
         main_list.append(Button(root, text='Add Message', command=transact(name, False)))
         main_list.append(Label(root, text=pm.main_dict[name].get_able_officials()))
@@ -54,10 +53,15 @@ def transact(name, official):
     def fun():
         input_text = main_list[-6].get(1.0, "end-1c")
         if input_text:
-            rez = pm.main_dict[name].act(input_text, official=official)
-            if rez:
-                pm.add_new_process(rez)
-            new_screen(name)()
+            try:
+                rez = pm.main_dict[name].act(input_text, official=official)
+                if rez:
+                    pm.add_new_process(rez)
+                pm.previous_action_result = 'Success!'
+                new_screen(name)()
+            except Exception as e:
+                pm.previous_action_result = str(e)
+                new_screen(name)()
     return fun
 
 
