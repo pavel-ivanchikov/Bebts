@@ -79,8 +79,8 @@ first_process_name = min(os.listdir(path)).split('.')[0]
 
 root = Tk()
 root.title("Debt Counter")
-root.geometry('620x680')
-root.resizable(False, False)
+root.geometry('620x620')
+root.resizable(False, True)
 main_list = []
 new_screen(first_process_name)()
 root.mainloop()
