@@ -10,10 +10,8 @@ class Debt(Process):
         self.currency_list = ['usd', 'ru', 'euro', 'riel']
         self.debt_currency = "usd"
         self.debt_amount = 0
-        self._able.update({'CHANGE_CURRENCY': self.change_currency, 'GIVE': self.give, 'TAKE': self.take})
-
-    def get_button_name(self):
-        return self.related_processes[0].name + "'s debt: " + str(self.debt_amount) + ' ' + str(self.debt_currency)
+        self.additional_ables = {'CHANGE_CURRENCY': self.change_currency, 'GIVE': self.give, 'TAKE': self.take}
+        self._able.update(self.additional_ables)
 
     def change_currency(self, text, date: float, init: bool):
         currency = text.split(' ')[1]
@@ -46,5 +44,6 @@ class Debt(Process):
         self.add_transaction(Transaction(date, f'TAKE {amount} from debt {self.debt_amount}', True), init)
         self.debt_amount += amount
 
-
+    def get_button_name(self):
+        return self.related_processes[0].name + "'s debt: " + str(self.debt_amount) + ' ' + str(self.debt_currency)
 

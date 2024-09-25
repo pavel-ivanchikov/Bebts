@@ -13,7 +13,8 @@ class Person(Process):
     def __init__(self, identifier: tuple[float, float]):
         super().__init__(identifier)
         self.name = "Person " + str(self.__class__._counter)
-        self._able.update({'NEW_DEBT': self.new_debt, 'CHANGE_NAME': self.change_name})
+        self.additional_ables = {'NEW_DEBT': self.new_debt, 'CHANGE_NAME': self.change_name}
+        self._able.update(self.additional_ables)
 
     def new_debt(self, _, date: float, init: bool):
         process = Debt((date, self._me))

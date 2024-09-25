@@ -81,7 +81,7 @@ class Process:
     def get_data(self):
         return self.__data[:]
 
-    def get_able_officials(self):
+    def get_ables(self):
         return ', '.join(self._able.keys())
 
     def get_not_official_transaction(self):

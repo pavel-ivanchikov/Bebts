@@ -4,7 +4,7 @@ import os
 
 
 def row(name, main_start, main_finish):
-    n = 110
+    n = 70
     ans = ['-' for _ in range(n + 2)]
     one = (main_finish - main_start) / n
     start = pm.main_dict[name].get_identifier()[0]
@@ -45,9 +45,9 @@ def new_screen(name):
             rows.append(row(process.get_process_name(), main_start, main_finish))
         main_list.insert(0, Label(root, text='\n'.join(rows), justify=LEFT))
         main_list.append(Label(root, text=pm.previous_action_result))
-        main_list.append(Text(root, height=2, width=70))
+        main_list.append(Text(root, height=2, width=42))
         main_list.append(Button(root, text='Add Message', command=transact(name, False)))
-        main_list.append(Label(root, text=pm.main_dict[name].get_able_officials()))
+        main_list.append(Label(root, text=pm.ables_dict[name]))
         main_list.append(Button(root, text='Official', command=transact(name, True)))
         main_list.append(Label(root, text=pm.main_dict[name].get_all_transaction(), justify=LEFT))
         main_list.append(Button(root, text='Close', command=quit))
@@ -79,7 +79,7 @@ first_process_name = min(os.listdir(path)).split('.')[0]
 
 root = Tk()
 root.title("Debt Counter")
-root.geometry('620x620')
+root.geometry('420x620')
 root.resizable(False, True)
 main_list = []
 new_screen(first_process_name)()
