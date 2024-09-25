@@ -1,9 +1,8 @@
 import os
-from Transaction import Transaction
+from ProcessesManager import ProcessesManager
 from MyLife import MyLife
 from Person import Person
 from Debt import Debt
-from ProcessesManager import ProcessesManager
 
 
 class ProcessesManagerDC(ProcessesManager):
