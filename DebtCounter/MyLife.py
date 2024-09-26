@@ -37,9 +37,6 @@ class MyLife(Process):
         self.add_transaction(Transaction(date, f'CHANGE_BIRTHDAY {new_birthday} from {self.birthday}', True), init)
         self.birthday = new_birthday
 
-    def get_button_name(self):
-        return self.name
-
     @classmethod
     def create_first_process(cls, date=None):
         init = True

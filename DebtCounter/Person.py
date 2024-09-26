@@ -28,6 +28,3 @@ class Person(Process):
         new_name = text.split(' ')[1]
         self.add_transaction(Transaction(date, f'CHANGE_NAME {new_name} from {self.name}', True), init)
         self.name = new_name
-
-    def get_button_name(self):
-        return self.name

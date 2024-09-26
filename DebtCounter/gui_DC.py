@@ -3,7 +3,7 @@ from tkinter import *
 import os
 
 
-def row(name, main_start, main_finish):
+def row(name, main_start, main_finish, text):
     n = 70
     ans = ['-' for _ in range(n + 2)]
     one = (main_finish - main_start) / n
@@ -16,10 +16,6 @@ def row(name, main_start, main_finish):
             time_crossing = transaction.date
             position = round((time_crossing - main_start) / one)
             ans[position] = 'x'
-    if hasattr(pm.main_dict[name], "get_button_name"):
-        text = pm.main_dict[name].get_button_name()
-    else:
-        text = pm.main_dict[name].get_process_name()
     return text + '\n' + ''.join(ans) + '>'
 
 
@@ -35,19 +31,17 @@ def new_screen(name):
         main_finish = max(pm.main_dict[name].get_last_date(),
                           max(pm.main_dict[name].related_processes,
                               key=lambda x: x.get_last_date()).get_last_date())
-        rows = [row(name, main_start, main_finish)]
+        rows = [row(name, main_start, main_finish, pm.ables_dict[name][2])]
         for process in pm.main_dict[name].related_processes:
-            if hasattr(process, "get_button_name"):
-                text = process.get_button_name()
-            else:
-                text = process.get_process_name()
-            main_list.append(Button(root, text=text, command=new_screen(process.get_process_name())))
-            rows.append(row(process.get_process_name(), main_start, main_finish))
+            text1 = pm.ables_dict[process.get_process_name()][1]
+            text2 = pm.ables_dict[process.get_process_name()][2]
+            main_list.append(Button(root, text=text1, command=new_screen(process.get_process_name())))
+            rows.append(row(process.get_process_name(), main_start, main_finish, text2))
         main_list.insert(0, Label(root, text='\n'.join(rows), justify=LEFT))
         main_list.append(Label(root, text=pm.previous_action_result))
         main_list.append(Text(root, height=2, width=42))
         main_list.append(Button(root, text='Add Message', command=transact(name, False)))
-        main_list.append(Label(root, text=pm.ables_dict[name]))
+        main_list.append(Label(root, text=pm.ables_dict[name][0]))
         main_list.append(Button(root, text='Official', command=transact(name, True)))
         main_list.append(Label(root, text=pm.main_dict[name].get_all_transaction(), justify=LEFT))
         main_list.append(Button(root, text='Close', command=quit))

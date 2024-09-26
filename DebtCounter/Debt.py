@@ -43,7 +43,3 @@ class Debt(Process):
             raise ValueError('Value should be positive integer number')
         self.add_transaction(Transaction(date, f'TAKE {amount} from debt {self.debt_amount}', True), init)
         self.debt_amount += amount
-
-    def get_button_name(self):
-        return self.related_processes[0].name + "'s debt: " + str(self.debt_amount) + ' ' + str(self.debt_currency)
-
