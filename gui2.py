@@ -62,7 +62,8 @@ def transact(name, official):
 
 path = r"C:/DebtCounter/first/"
 pm = ProcessesManager(path)
-first_process_name = min(os.listdir(path)).split('.')[0]
+pm.deserialization()
+first_process_name = pm.first_process_name
 
 root = Tk()
 root.title("Debt Counter")

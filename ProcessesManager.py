@@ -10,10 +10,6 @@ class ProcessesManager:
         self.main_dict = {}
         self.temp_message_dict = {}
         self.new_process_tags = ('SPLIT', )
-        first_process = Process.create_first_process(int(self.first_process_name) / 10 ** 6)
-        self.main_dict[self.first_process_name] = first_process
-        self._read(self.first_process_name)  # Тут происходит считывание транзакций всего дерева процессов.
-        self._acting()  # Тут происходит десериализация
 
     def _read(self, name):
         self.temp_message_dict[name] = []
@@ -53,3 +49,12 @@ class ProcessesManager:
 
     def add_new_process(self, process):
         self.main_dict[process.get_process_name()] = process
+
+    def get_main_process(self):
+        return Process.create_first_process(int(self.first_process_name) / 10 ** 6)
+
+    def deserialization(self):
+        first_process = self.get_main_process()
+        self.main_dict[self.first_process_name] = first_process
+        self._read(self.first_process_name)  # Тут происходит считывание транзакций всего дерева процессов.
+        self._acting()  # Тут происходит десериализация

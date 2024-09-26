@@ -2,6 +2,7 @@ from ProcessesManagerDC import ProcessesManagerDC
 
 path = r"C:/DebtCounter/second/"
 pm = ProcessesManagerDC(path)
+pm.deserialization()
 
 print(*pm.main_dict.keys())
 keys = sorted(pm.main_dict.keys())
