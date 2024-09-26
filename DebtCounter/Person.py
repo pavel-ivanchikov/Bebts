@@ -12,6 +12,7 @@ class Person(Process):
 
     def __init__(self, identifier: tuple[float, float]):
         super().__init__(identifier)
+        self.debts = []
         self.name = "Person " + str(self.__class__._counter)
         self.additional_ables = {'NEW_DEBT': self.new_debt, 'CHANGE_NAME': self.change_name}
         self._able.update(self.additional_ables)
@@ -22,6 +23,7 @@ class Person(Process):
         process.add_transaction(Transaction(date, f'INFO New debt: {date} from {self._me}', True), init)
         self.related_processes.append(process)
         process.related_processes.append(self)
+        self.debts.append(process)
         return process
 
     def change_name(self, text, date: float, init: bool):

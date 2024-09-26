@@ -1,6 +1,5 @@
 from ProcessesManagerDC import ProcessesManagerDC
-from tkinter import *
-import os
+from tkinter import Tk, Button, Label, Text, LEFT
 
 
 def row(name, main_start, main_finish, text):
@@ -31,17 +30,17 @@ def new_screen(name):
         main_finish = max(pm.main_dict[name].get_last_date(),
                           max(pm.main_dict[name].related_processes,
                               key=lambda x: x.get_last_date()).get_last_date())
-        rows = [row(name, main_start, main_finish, pm.ables_dict[name][2])]
+        rows = [row(name, main_start, main_finish, pm.info_dict[name][2])]
         for process in pm.main_dict[name].related_processes:
-            text1 = pm.ables_dict[process.get_process_name()][1]
-            text2 = pm.ables_dict[process.get_process_name()][2]
+            text1 = pm.info_dict[process.get_process_name()][1]
+            text2 = pm.info_dict[process.get_process_name()][2]
             main_list.append(Button(root, text=text1, command=new_screen(process.get_process_name())))
             rows.append(row(process.get_process_name(), main_start, main_finish, text2))
         main_list.insert(0, Label(root, text='\n'.join(rows), justify=LEFT))
         main_list.append(Label(root, text=pm.previous_action_result))
         main_list.append(Text(root, height=2, width=42))
         main_list.append(Button(root, text='Add Message', command=transact(name, False)))
-        main_list.append(Label(root, text=pm.ables_dict[name][0]))
+        main_list.append(Label(root, text=pm.info_dict[name][0]))
         main_list.append(Button(root, text='Official', command=transact(name, True)))
         main_list.append(Label(root, text=pm.main_dict[name].get_all_transaction(), justify=LEFT))
         main_list.append(Button(root, text='Close', command=quit))
@@ -59,6 +58,7 @@ def transact(name, official):
                 rez = pm.main_dict[name].act(input_text, official=official)
                 if rez:
                     pm.add_new_process(rez)
+                pm.controller()
                 pm.previous_action_result = 'Success!'
                 new_screen(name)()
             except Exception as e:

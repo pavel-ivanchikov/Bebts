@@ -14,6 +14,7 @@ class MyLife(Process):
 
     def __init__(self, identifier: tuple[float, float]):
         super().__init__(identifier)
+        self.persons = []
         self.additional_ables = {'NEW_PERSON': self.new_person, 'CHANGE_NAME': self.change_name, 'CHANGE_BIRTHDAY': self.change_birthday}
         self._able.update(self.additional_ables)
         self.name = 'Main Process'
@@ -25,6 +26,7 @@ class MyLife(Process):
         process.add_transaction(Transaction(date, f'INFO New person: {date} from {self._me}', True), init)
         self.related_processes.append(process)
         process.related_processes.append(self)
+        self.persons.append(process)
         return process
 
     def change_name(self, text, date: float, init: bool):
