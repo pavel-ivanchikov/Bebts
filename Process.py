@@ -25,7 +25,7 @@ class Process:
         self.__data.append(transaction)
 
     def act(self, text, date=None, official=False):
-        if date is None:
+        if date is not None:
             init = True
         else:
             init = False
