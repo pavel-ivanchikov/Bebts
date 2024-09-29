@@ -2,7 +2,7 @@ from ProcessesManagerDC import ProcessesManagerDC
 from tkinter import Tk, Button, Label, Text, LEFT
 
 
-def row(name, main_start, main_finish, text):
+def row(name, main_start, main_finish, text, main_name=None):
     n = 70
     ans = ['-' for _ in range(n + 2)]
     one = (main_finish - main_start) / n
@@ -14,7 +14,12 @@ def row(name, main_start, main_finish, text):
         if transaction.official:
             time_crossing = transaction.date
             position = round((time_crossing - main_start) / one)
-            ans[position] = 'x'
+            if main_name is None:
+                pm.positions.append(position)
+                ans[position] = 'x'
+            else:
+                if position in pm.positions:
+                    ans[position] = 'x'
     return text + '\n' + ''.join(ans) + '>'
 
 
@@ -24,6 +29,7 @@ def new_screen(name):
             for w in main_list:
                 w.destroy()
             main_list.clear()
+        pm.positions.clear()
         main_start = min(pm.main_dict[name].get_first_date(),
                          min(pm.main_dict[name].related_processes,
                              key=lambda x: x.get_first_date()).get_first_date())
@@ -35,7 +41,7 @@ def new_screen(name):
             text1 = pm.info_dict[process.get_process_name()][1]
             text2 = pm.info_dict[process.get_process_name()][2]
             main_list.append(Button(root, text=text1, command=new_screen(process.get_process_name())))
-            rows.append(row(process.get_process_name(), main_start, main_finish, text2))
+            rows.append(row(process.get_process_name(), main_start, main_finish, text2, name))
         main_list.insert(0, Label(root, text='\n'.join(rows), justify=LEFT))
         main_list.append(Label(root, text=pm.previous_action_result))
         main_list.append(Text(root, height=2, width=42))

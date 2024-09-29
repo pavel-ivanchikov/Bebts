@@ -11,6 +11,7 @@ class ProcessesManagerDC(ProcessesManager):
         self.new_process_tags = ('SPLIT', 'NEW_PERSON', 'NEW_DEBT')
         self.info_dict = {}
         self.previous_action_result = 'Wellcome!'
+        self.positions = []
         self.all_transaction = None
 
     def controller(self):
