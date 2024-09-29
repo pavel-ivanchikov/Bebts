@@ -1,4 +1,3 @@
-import datetime
 from Transaction import Transaction
 from Process import Process
 
@@ -44,33 +43,3 @@ class Debt(Process):
             raise ValueError('Value should be positive integer number')
         self.add_transaction(Transaction(date, f'TAKE {amount} from debt {self.debt_amount}', True), init)
         self.debt_amount += amount
-
-    def get_all_transaction(self):
-        ans = []
-        for transaction in reversed(self.get_data()):
-            if transaction.official:
-                date = datetime.datetime.fromtimestamp(transaction.date)
-                date_text = date.strftime("%Y-%m-%d %H:%M:%S")
-                tag = transaction.text.split()[0]
-                if tag == 'INFO':
-                    tag2 = transaction.text.split()[1]
-                    if tag2 == 'New':
-                        message = f'{date_text}\nThe process was created'
-                    elif tag2 == 'CROSS':
-                        message = f'{date_text}\nThe process was crossed'
-                    else:
-                        message = f'{date_text}\nSome another information'
-                elif tag == 'CROSS':
-                    message = f'{date_text}\nThe process was crossed'
-                elif tag == 'CHANGE_CURRENCY':
-                    message = f'{date_text}\nThe currency was changed'
-                elif tag == 'GIVE':
-                    message = f'{date_text}\nI gave money to somebody'
-                elif tag == 'TAKE':
-                    message = f'{date_text}\nI took money from somebody'
-                else:
-                    message = f'{date_text}\nUnknown tag'
-                ans.append(message)
-            else:
-                ans.append(str(transaction))
-        return f'\n' + '\n\n'.join(ans)
