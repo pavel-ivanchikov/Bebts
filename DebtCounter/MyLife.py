@@ -39,6 +39,37 @@ class MyLife(Process):
         self.add_transaction(Transaction(date, f'CHANGE_BIRTHDAY {new_birthday} from {self.birthday}', True), init)
         self.birthday = new_birthday
 
+    def get_all_transaction(self):
+        ans = []
+        for transaction in reversed(self.get_data()):
+            if transaction.official:
+                date = datetime.datetime.fromtimestamp(transaction.date)
+                date_text = date.strftime("%Y-%m-%d %H:%M:%S")
+                tag = transaction.text.split()[0]
+                if tag == 'INFO':
+                    tag2 = transaction.text.split()[1]
+                    if tag2 == 'New:':
+                        message = f'{date_text}\nThe process was created'
+                    elif tag2 == 'CROSS':
+                        message = f'{date_text}\nThe process was crossed'
+                    else:
+                        message = f'{date_text}\nSome another information'
+                elif tag == 'CROSS':
+                    message = f'{date_text}\nThe process was crossed'
+                elif tag == 'NEW_PERSON':
+                    message = f'{date_text}\nNew person was created'
+                elif tag == 'CHANGE_NAME':
+                    message = f'{date_text}\nThe name of main process was changed'
+                elif tag == 'CHANGE_BIRTHDAY':
+                    message = f'{date_text}\nThe birth day was changed'
+                else:
+                    message = f'{date_text}\nUnknown tag'
+                ans.append(message)
+            else:
+                ans.append(str(transaction))
+        return f'\n' + '\n\n'.join(ans)
+        # return f'\n' + '\n\n'.join(map(lambda x: str(x), reversed(self.__data)))
+
     @classmethod
     def create_first_process(cls, date=None):
         init = True
@@ -48,4 +79,3 @@ class MyLife(Process):
         process = MyLife((date, 0))
         process.add_transaction(Transaction(date, f'INFO New: {date} from {0}', True), init)
         return process
-

@@ -43,7 +43,6 @@ def new_screen(name):
         main_list.append(Label(root, text=pm.info_dict[name][0]))
         main_list.append(Button(root, text='Official', command=transact(name, True)))
         main_list.append(Label(root, text=pm.main_dict[name].get_all_transaction(), justify=LEFT))
-        main_list.append(Button(root, text='Close', command=quit))
 
         for w in main_list:
             w.pack()
@@ -52,7 +51,7 @@ def new_screen(name):
 
 def transact(name, official):
     def fun():
-        input_text = main_list[-6].get(1.0, "end-1c")
+        input_text = main_list[-5].get(1.0, "end-1c")
         if input_text:
             try:
                 rez = pm.main_dict[name].act(input_text, official=official)
