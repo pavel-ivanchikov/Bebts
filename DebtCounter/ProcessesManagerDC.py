@@ -25,7 +25,7 @@ class ProcessesManagerDC(ProcessesManager):
                 self.info_dict[process.get_process_name()].append(process.name)
                 amount = sum(map(lambda x: x.debt_amount, process.debts))
                 total_amount += amount
-                self.info_dict[process.get_process_name()].append(process.name + ' Total balance: ' + str(amount))
+                self.info_dict[process.get_process_name()].append(process.name + ' balance: ' + str(amount))
             elif isinstance(process, Debt):
                 self.info_dict[process.get_process_name()] = ['CROSS, ' + ', '.join(process.additional_ables.keys())]
                 self.info_dict[process.get_process_name()].append('Debt of ' + process.related_processes[0].name)
@@ -34,7 +34,7 @@ class ProcessesManagerDC(ProcessesManager):
                 self.info_dict[process.get_process_name()] = ['CROSS, SPLIT']
                 self.info_dict[process.get_process_name()].append(process.get_process_name())
                 self.info_dict[process.get_process_name()].append(process.get_process_name() + " from " + process.related_processes[0].name)
-        self.info_dict[self.first_process_name].append(self.first_process.name + ' Total balance: ' + str(total_amount))
+        self.info_dict[self.first_process_name].append(self.first_process.name + ' balance: ' + str(total_amount))
 
     def get_all_transactionDC(self, name):
         process = self.main_dict[name]
@@ -65,9 +65,13 @@ class ProcessesManagerDC(ProcessesManager):
                 elif tag == 'CHANGE_CURRENCY':
                     message = f'{date_text}\nThe currency was changed'
                 elif tag == 'GIVE':
-                    message = f'{date_text}\nI gave money to somebody'
+                    amount = transaction.text.split()[1]
+                    debt = transaction.text.split()[4]
+                    message = f'{date_text}\nI gave {amount}. Debt was {debt}'
                 elif tag == 'TAKE':
-                    message = f'{date_text}\nI took money from somebody'
+                    amount = transaction.text.split()[1]
+                    debt = transaction.text.split()[4]
+                    message = f'{date_text}\nI took {amount}. Debt was {debt}'
                 else:
                     message = f'{date_text}\nUnknown tag'
                 ans.append(message)

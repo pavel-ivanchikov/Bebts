@@ -31,7 +31,7 @@ class Debt(Process):
         if amount < 0:
             raise ValueError('Value should be positive integer number')
         self.add_transaction(Transaction(date, f'GIVE {amount} from debt {self.debt_amount}', True), init)
-        self.debt_amount -= amount
+        self.debt_amount += amount
 
     def take(self, text, date: float, init: bool):
         amount = text.split(' ')[1]
@@ -42,4 +42,4 @@ class Debt(Process):
         if amount < 0:
             raise ValueError('Value should be positive integer number')
         self.add_transaction(Transaction(date, f'TAKE {amount} from debt {self.debt_amount}', True), init)
-        self.debt_amount += amount
+        self.debt_amount -= amount

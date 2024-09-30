@@ -37,7 +37,7 @@ def new_screen(name):
                           max(pm.main_dict[name].related_processes,
                               key=lambda x: x.get_last_date()).get_last_date())
         rows = [row(name, main_start, main_finish, pm.info_dict[name][2])]
-        for process in pm.main_dict[name].related_processes:
+        for process in reversed(pm.main_dict[name].related_processes):
             text1 = pm.info_dict[process.get_process_name()][1]
             text2 = pm.info_dict[process.get_process_name()][2]
             main_list.append(Button(root, text=text1, command=new_screen(process.get_process_name())))
