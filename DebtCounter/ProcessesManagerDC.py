@@ -36,10 +36,14 @@ class ProcessesManagerDC(ProcessesManager):
                 self.info_dict[process.get_process_name()].append(process.get_process_name() + " from " + process.related_processes[0].name)
         self.info_dict[self.first_process_name].append(self.first_process.name + ' balance: ' + str(total_amount))
 
-    def get_all_transactionDC(self, name):
+    def get_transactionDC(self, name, n=None):
         process = self.main_dict[name]
         ans = []
-        for transaction in reversed(process.get_data()):
+        if n is None:
+            data = process.get_data()
+        else:
+            data = process.get_data()[-n:]
+        for transaction in reversed(data):
             if transaction.official:
                 date = datetime.datetime.fromtimestamp(transaction.date)
                 date_text = date.strftime("%Y-%m-%d %H:%M:%S")
@@ -49,17 +53,23 @@ class ProcessesManagerDC(ProcessesManager):
                     if tag2 == 'New':
                         message = f'{date_text}\nThe process was created'
                     elif tag2 == 'CROSS':
-                        message = f'{date_text}\nThe process was crossed'
+                        name = float(transaction.text.split()[2])
+                        name = str(int(name * 10 ** 6))
+                        message = f'{date_text}\nThe process was crossed with {self.info_dict[name][1]}'
                     else:
                         message = f'{date_text}\nSome another information'
                 elif tag == 'CROSS':
-                    message = f'{date_text}\nThe process was crossed'
+                    name = float(transaction.text.split()[1])
+                    name = str(int(name * 10 ** 6))
+                    message = f'{date_text}\nThe process was crossed with {self.info_dict[name][1]}'
                 elif tag == 'NEW_PERSON':
-                    message = f'{date_text}\nNew person was created'
+                    name = float(transaction.text.split()[1])
+                    name = str(int(name * 10 ** 6))
+                    message = f'{date_text}\nNew person, {self.info_dict[name][1]}, was created'
                 elif tag == 'NEW_DEBT':
                     message = f'{date_text}\nNew debt was created'
                 elif tag == 'CHANGE_NAME':
-                    message = f'{date_text}\nThe name of main process was changed'
+                    message = f'{date_text}\nThe name was changed'
                 elif tag == 'CHANGE_BIRTHDAY':
                     message = f'{date_text}\nThe birth day was changed'
                 elif tag == 'CHANGE_CURRENCY':
